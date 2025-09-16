@@ -4,14 +4,63 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { FaLock } from "react-icons/fa";
 import Button from "@mui/material/Button";
+ import { useFormik } from 'formik';
+import { registerPageSchema } from "../schemas/RegisterPageSchemas";
+import registerPageService from "../services/RegisterPageService";
+import type { UserType } from "../types/Type";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 export default function RegisterPage() {
+
+  const navigate = useNavigate();
+
+  const submit = async (values:any,actions:any) => {
+    // validationSchema old. için hata verirse tetiklenmez.
+    // standart gereği registerPageService olarak düzeltiriz RegisterPageService'i r küçük yazdık sadece
+   try {
+
+    const payload : UserType = {
+      username : values.username,
+      password : values.password
+    }
+
+  const response = await registerPageService.register(payload) // promise döner async await ile yakalarız.
+  if(response){
+    toast.success("Kayıt Başarılı")
+    clear()
+    navigate("/login")
+  }
+    
+   } catch (error:any) {
+    toast.error(`Hata : ${error.message}`)
+   }
+
+  }
+
+   const {values,handleBlur,handleChange,resetForm,errors , handleSubmit , touched} = useFormik({
+     initialValues: {
+     username:"",
+     password : ""
+     },
+     validationSchema : registerPageSchema
+     ,
+     onSubmit: submit
+   });
+   
+   const clear = () => {
+    resetForm()
+   }
   return (
     <div className="register">
       <div className="main" >
-        <form action="">
+        <form  onSubmit={handleSubmit}>
           <div className="form-div">
             <TextField
+            value={values.username}
+            onChange={handleChange}
             sx={{marginBottom:"25px", width:"300px"}}
+            onBlur={handleBlur}
               id="username"
           placeholder="Kullanıcı Adı"
               slotProps={{
@@ -24,8 +73,12 @@ export default function RegisterPage() {
                 },
               }}
               variant="outlined"
+              helperText={errors.username && touched.username && <span style={{color:"#eb4d4b"}}>{errors.username}</span>}
             />
              <TextField
+             value={values.password}
+             onChange={handleChange}
+             onBlur={handleBlur}
               sx={{marginBottom:"25px", width:"300px" }}
               id="password"
           placeholder="Şifre"
@@ -40,10 +93,11 @@ export default function RegisterPage() {
                 },
               }}
               variant="outlined"
+              helperText={errors.password && touched.password && <span style={{color:"#eb4d4b"}}>{errors.password}</span>}
             />
             <div>
-              <Button size="small" sx={{textTransform:"none",marginRight:"10px"}} variant="contained" color="info">Kaydol</Button>
-              <Button size="small" sx={{textTransform:"none",backgroundColor:"#e7bf90"}} variant="contained" >Temizle</Button>
+              <Button type="submit" size="small" sx={{textTransform:"none",marginRight:"10px"}} variant="contained" color="info">Kaydol</Button>
+              <Button onClick={clear} size="small" sx={{textTransform:"none",backgroundColor:"#e7bf90"}} variant="contained" >Temizle</Button>
             </div>
           </div>
         </form>
