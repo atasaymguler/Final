@@ -14,6 +14,17 @@
       "id": "de4a",
       "username": "mguleratasay",
       "password": "1234556"
+    },
+    {
+      "id": "9ff9",
+      "username": "cafer",
+      "password": "123321"
+    },
+    {
+      "id": "138206",
+      "username": "newuser",
+      "password": "newuser",
+      "balance": 1000
     }
   ]
 }

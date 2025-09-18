@@ -16,16 +16,17 @@ export default function RegisterPage() {
   const navigate = useNavigate();
 
   const submit = async (values:any,actions:any) => {
-    // validationSchema old. için hata verirse tetiklenmez.
-    // standart gereği registerPageService olarak düzeltiriz RegisterPageService'i r küçük yazdık sadece
+   
    try {
 
     const payload : UserType = {
+      id : String(Math.floor(Math.random()*999999)),
       username : values.username,
-      password : values.password
+      password : values.password,
+      balance : 1000
     }
 
-  const response = await registerPageService.register(payload) // promise döner async await ile yakalarız.
+  const response = await registerPageService.register(payload) 
   if(response){
     toast.success("Kayıt Başarılı")
     clear()
