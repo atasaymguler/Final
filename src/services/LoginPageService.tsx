@@ -4,8 +4,6 @@ import type { UserType } from "../types/Type";
 
 class LoginPageService {
   login(): Promise<UserType[]> {
-    // Tüm userları döndüğü için [] vermemiz gerek.
-
     return new Promise((resolve: any, reject: any) => {
       axios
         .get("/users")

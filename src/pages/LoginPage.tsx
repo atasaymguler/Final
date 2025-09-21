@@ -7,13 +7,11 @@ import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { registerPageSchema } from "../schemas/RegisterPageSchemas";
 import type { UserType } from "../types/Type";
-import loginPageService from "../services/LoginPageService"; // LoginPageService geldi ama loginPageService olarak kullanırız standart buymuş.
+import loginPageService from "../services/LoginPageService";
 import { useDispatch } from "react-redux";
 import { setCurrentUser, setLoading } from "../redux/appSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-//! Giriş yapılıyor sorun yok ama giriş yapan kişi sayfayı yenilediğinde state içerisinde ki kullanıcı bilgileri kayboluyor bu yüzden giriş yapan kişiyi localstorage'de tutarız.
 
 interface CheckUserType {
   result: boolean;
@@ -51,20 +49,20 @@ export default function LoginPage() {
           values.password
         );
         if (checkUserResponse.result && checkUserResponse.currentUser) {
-          //Kullanıcı adı ve şifre doğru
+ 
           toast.success("Giriş Başarılı")
           dispatch(setCurrentUser(checkUserResponse.currentUser));
           localStorage.setItem("currentUser", JSON.stringify(checkUserResponse.currentUser))
           navigate("/");
         } else {
-          //  Yanlış Kullanıcı
+      
           toast.error("Kullanıcı adı veya şifre yanlış");
         }
       }
     } catch (error: any) {
       toast.error(`Giriş Yapılırken Hata Oluştu : ${error.message}`);
     } finally {
-      // finally try çalışsa da catch çalışsa da sonunda çalışır, hata veya başarılı girişi sonucu bu circle kapatırız.
+    
       dispatch(setLoading(false));
     }
   };

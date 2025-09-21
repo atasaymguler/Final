@@ -11,5 +11,5 @@ class RegisterPageService {
     });
   }
 }
-// Nesne üretip dışarıya açarım.
+
 export default new RegisterPageService();
