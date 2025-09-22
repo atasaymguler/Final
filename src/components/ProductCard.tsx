@@ -1,7 +1,7 @@
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import type { ProductType } from '../types/Type'
@@ -26,7 +26,11 @@ export default function ProductCard({product}:ProductCardProps) { // props : :Pr
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
         {description.substring(0,150)}...
         </Typography>
+      
       </CardContent>
+      <div>
+          <h3 style={{fontFamily:'monospace',fontSize:"20px"}}>{price}₺</h3>
+      </div>
       <CardActions>
         <Button size="small" variant='outlined'>Detay</Button>
       
