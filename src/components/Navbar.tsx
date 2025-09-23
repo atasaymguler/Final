@@ -13,6 +13,8 @@ import { filterProducts, setCurrentUser, setProducts } from "../redux/appSlice";
 import { toast } from "react-toastify";
 import productService from "../services/ProductService";
 import type { ProductType } from "../types/Type";
+import { FaShoppingBasket } from "react-icons/fa";
+import Badge from "@mui/material/Badge";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ export default function Navbar() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            gap:"10px"
+            gap:"15px"
           }}
         >
           <TextField
@@ -86,6 +88,9 @@ export default function Navbar() {
             placeholder="Bir Şey Ara"
             variant="standard"
           />
+             <Badge style={{cursor:"pointer"}} badgeContent={4} color="primary">
+          <FaShoppingBasket style={{fontSize:"18px"}} />
+          </Badge>
           <Button onClick={logout} sx={{ textTransform: "none",color: "lightgrey" ,cursor:"pointer"}} color="inherit">
             Çıkış Yap
           </Button>
