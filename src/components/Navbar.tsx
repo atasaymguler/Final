@@ -9,12 +9,31 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "../redux/appSlice";
+import { filterProducts, setCurrentUser, setProducts } from "../redux/appSlice";
 import { toast } from "react-toastify";
+import productService from "../services/ProductService";
+import type { ProductType } from "../types/Type";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
+
+  const handleFilter = async (e:React.ChangeEvent<HTMLInputElement>) =>{
+   try {
+    if(e.target.value){
+      //Filtreleme yapılıyor
+      dispatch(filterProducts(e.target.value))
+    }
+    else{
+      //Filtreleme yok bütün ürünleri getir
+      const products :ProductType[] = await productService.getAllProducts()
+      dispatch(setProducts(products))
+    }
+    
+   } catch (error:any) {
+    toast.error(`Ürünleri filtrelerken hata oluştur : ${error.message}`)
+   }
+  }
   const logout = () => {
     localStorage.removeItem("currentUser");
     dispatch(setCurrentUser(null))
@@ -52,6 +71,7 @@ export default function Navbar() {
           }}
         >
           <TextField
+          onChange={(e:React.ChangeEvent<HTMLInputElement> )=> handleFilter(e)}
             sx={{ width: "300px", color: "#fff" }}
             slotProps={{
               input: {
