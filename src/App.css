@@ -5,3 +5,8 @@ body{
 input::placeholder{
   font-size: 15px;
 }
+.css-19opgx6-MuiFormControlLabel-root .MuiFormControlLabel-label{
+  /* F12'den label'ın classını bul ve o classı buraya yaz istediğim css özelliğini yazıp ezebiliriz. */
+  font-size: 15px;
+  text-transform: capitalize;
+}

@@ -6,49 +6,52 @@ import productService from "../services/ProductService";
 import { toast } from "react-toastify";
 import type { RootState } from "../redux/store";
 import ProductCard from "../components/ProductCard";
-import '../css/HomePage.css'
+import "../css/HomePage.css";
+import Category from "../components/Category";
+import Container from "@mui/material/Container";
 
 export default function HomePage() {
-
   const dispatch = useDispatch();
 
-  const {products} = useSelector((state:RootState)=> state.app)
+  const { products } = useSelector((state: RootState) => state.app);
 
   const getAllProducts = async () => {
     try {
-    dispatch(setLoading(true))
-    const response : ProductType[] = await productService.getAllProducts()
-    if(response){
-      // Ürünler başarıyla alındı
-    dispatch(setProducts(response))
+      dispatch(setLoading(true));
+      const response: ProductType[] = await productService.getAllProducts();
+      if (response) {
+        // Ürünler başarıyla alındı
+        dispatch(setProducts(response));
+      }
+    } catch (error: any) {
+      toast.error(`Ürünler getirilirken hata oluştu : ${error}`);
+    } finally {
+      dispatch(setLoading(false));
     }
-      
-    } catch (error:any) {
-      toast.error(`Ürünler getirilirken hata oluştu : ${error}`)
-    }
-    finally{
-       dispatch(setLoading(false))
-    }
-  }
+  };
 
-  useEffect(()=>{
-    getAllProducts()
-  },[])
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
   useEffect(() => {
     const result = localStorage.getItem("currentUser");
     if (result) {
-      const currentUser: UserType = JSON.parse(result) as UserType; 
+      const currentUser: UserType = JSON.parse(result) as UserType;
       dispatch(setCurrentUser(currentUser));
     }
   }, []);
-  return(
-<div className="productList">
-  {
-    products && products.map((product:ProductType,index : number)=>(
-      <ProductCard  key={index} product={product} />
-    ))
-  }
-</div>
-  ) ;
+  return (
+    <div style={{ display: "flex", justifyContent:"center" , alignItems:"flex-start" }}>
+      <Category />
+      <Container maxWidth="xl">
+        <div className="productList">
+          {products &&
+            products.map((product: ProductType, index: number) => (
+              <ProductCard key={index} product={product} />
+            ))}
+        </div>
+      </Container>
+    </div>
+  );
 }
