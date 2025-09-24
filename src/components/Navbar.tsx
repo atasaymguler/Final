@@ -8,15 +8,17 @@ import MagarIcon from "../images/magara.png";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { filterProducts, setCurrentUser, setProducts } from "../redux/appSlice";
 import { toast } from "react-toastify";
 import productService from "../services/ProductService";
 import type { ProductType } from "../types/Type";
 import { FaShoppingBasket } from "react-icons/fa";
 import Badge from "@mui/material/Badge";
+import type { RootState } from "../redux/store";
 
 export default function Navbar() {
+  const {basket} = useSelector((state:RootState)=>state.basket)
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
@@ -88,7 +90,7 @@ export default function Navbar() {
             placeholder="Bir Şey Ara"
             variant="standard"
           />
-             <Badge style={{cursor:"pointer"}} badgeContent={4} color="primary">
+             <Badge style={{cursor:"pointer"}} badgeContent={basket.length} color="primary">
           <FaShoppingBasket style={{fontSize:"18px"}} />
           </Badge>
           <Button onClick={logout} sx={{ textTransform: "none",color: "lightgrey" ,cursor:"pointer"}} color="inherit">
